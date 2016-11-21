@@ -124,9 +124,13 @@ interfaces = address.Assign(devices);
 
 # Create the server on port 9. Put it on node 1, and start it at time 1.0s.
 echoServer = ns.applications.UdpEchoServerHelper(9)
+#echoServer2 = ns.applications.UdpEchoServerHelper(10)
 serverApps = echoServer.Install(nodes.Get(1))
+#serverApps = echoServer2.Install(nodes.Get(1))
 serverApps.Start(ns.core.Seconds(1.0))
 serverApps.Stop(ns.core.Seconds(10.0))
+
+
 
 # Create the client application and connect it to node 1 and port 9. Configure number
 # of packets, packet sizes, inter-arrival interval.
@@ -136,8 +140,15 @@ echoClient.SetAttribute("Interval",
                         ns.core.TimeValue(ns.core.Seconds (float(cmd.interval))))
 echoClient.SetAttribute("PacketSize", ns.core.UintegerValue(1024))
 
+#echoClient2 = ns.applications.UdpEchoClientHelper(interfaces.GetAddress(1), 10)
+#echoClient2.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
+#echoClient2.SetAttribute("Interval",
+#                        ns.core.TimeValue(ns.core.Seconds (float(cmd.interval))))
+#echoClient2.SetAttribute("PacketSize", ns.core.UintegerValue(1024))
+
 # Put the client on node 0 and start sending at time 2.0s.
 clientApps = echoClient.Install(nodes.Get(0))
+#clientApps = echoClient2.Install(nodes.Get(0))
 clientApps.Start(ns.core.Seconds(2.0))
 clientApps.Stop(ns.core.Seconds(10.0))
 
