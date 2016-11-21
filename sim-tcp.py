@@ -242,16 +242,20 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
   client_apps.Start(startTime)
   client_apps.Stop(stopTime) 
 
-def SetupUDPSink(srcNode, dstNode, destAddr, startTime, stopTime):
+def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
   packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
   sink_apps = packet_sink_helper.Install(dstNode)
-  sink_apps.Start(ns.core(2.0))
+  sink_apps.Start(ns.core.Seconds(2.0))
   sink_apps.Stop(ns.core.Seconds(50.0))
 
-  udp_client_helper = ns.applications.UdpClientHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
-  udp_client_helper.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
-  udp_client_helper.SetAttribute("Interval", ns.core.TimeValue(ns.core.Seconds (float(cmd.on_off_rate))))
-  udp_client_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
+  on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
+  on_off_udp_helper.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
+  on_off_udp_helper.SetAttribute("Interval", ns.core.TimeValue(ns.core.Seconds(float(cmd.on_off_rate))))
+  on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
+#  udp_client_helper = ns.applications.UdpClientHelper(ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
+#  udp_client_helper.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
+#  udp_client_helper.SetAttribute("Interval", ns.core.TimeValue(ns.core.Seconds (float(cmd.on_off_rate))))
+#  udp_client_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
 
 #echoClient = ns.applications.UdpEchoClientHelper(interfaces.GetAddress(1), 9)
 #echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
