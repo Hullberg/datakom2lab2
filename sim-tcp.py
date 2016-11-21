@@ -249,9 +249,11 @@ def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
   sink_apps.Stop(ns.core.Seconds(50.0))
 
   on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
-  on_off_udp_helper.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
-  on_off_udp_helper.SetAttribute("Interval", ns.core.TimeValue(ns.core.Seconds(float(cmd.on_off_rate))))
+  on_off_udp_helper.SetAttribute("DataRate", ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
   on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
+  on_off_udp_helper.SetAttribute("OnTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
+  on_off_udp_helper.SetAttribute("OffTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
+
 #  udp_client_helper = ns.applications.UdpClientHelper(ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
 #  udp_client_helper.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
 #  udp_client_helper.SetAttribute("Interval", ns.core.TimeValue(ns.core.Seconds (float(cmd.on_off_rate))))
@@ -260,7 +262,7 @@ def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
 #echoClient = ns.applications.UdpEchoClientHelper(interfaces.GetAddress(1), 9)
 #echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(100))
 
-  client_apps = udp_client_helper.Install(srcNode)
+  client_apps = on_off_udp_helper.Install(srcNode)
   client_apps.Start(startTime)
   client_apps.Stop(stopTime)
 
