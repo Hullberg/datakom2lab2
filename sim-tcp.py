@@ -47,8 +47,8 @@ import ns.flow_monitor
 #ns.core.LogComponentEnable("PointToPointNetDevice", ns.core.LOG_LEVEL_ALL)
 #ns.core.LogComponentEnable("DropTailQueue", ns.core.LOG_LEVEL_LOGIC)
 #ns.core.LogComponentEnable("OnOffApplication", ns.core.LOG_LEVEL_INFO)
-#ns.core.LogComponentEnable("TcpWestwood", ns.core.LOG_LEVEL_LOGIC)
-#ns.core.LogComponentEnable("TcpTahoe", ns.core.LOG_LEVEL_LOGIC)
+ns.core.LogComponentEnable("TcpWestwood", ns.core.LOG_LEVEL_LOGIC)
+ns.core.LogComponentEnable("TcpTahoe", ns.core.LOG_LEVEL_LOGIC)
 ns.core.LogComponentEnable("TcpNewReno", ns.core.LOG_LEVEL_LOGIC)
 
 
@@ -257,6 +257,8 @@ def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
   client_apps = on_off_udp_helper.Install(srcNode)
   client_apps.Start(startTime)
   client_apps.Stop(stopTime)
+
+###
 
 SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupUDPSink(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(20.0), ns.core.Seconds(40.0))
