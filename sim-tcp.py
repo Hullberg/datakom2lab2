@@ -159,8 +159,7 @@ ns.core.Config.SetDefault("ns3::TcpSocket::SegmentSize", ns.core.UintegerValue(1
 
 # Some examples of attributes for some of the TCP versions.
 ns.core.Config.SetDefault("ns3::TcpNewReno::ReTxThreshold", ns.core.UintegerValue(4))
-ns.core.Config.SetDefault("ns3::TcpWestwood::ProtocolType",
-                          ns.core.StringValue("WestwoodPlus"))
+ns.core.Config.SetDefault("ns3::TcpWestwood::ProtocolType", ns.core.StringValue("WestwoodPlus"))
 
 
 #######################################################################################
