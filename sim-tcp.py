@@ -29,7 +29,7 @@ import ns.flow_monitor
 #
 # Enable this line to have random number being generated between runs.
 
-#ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
+ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
 
 
 #######################################################################################
@@ -144,10 +144,10 @@ d7d5 = pointToPoint.Install(n7n5)
 d4d5 = pointToPoint.Install(n4n5)
 
 # Here we can introduce an error model on the bottle-neck link (from node 4 to 5)
-#em = ns.network.RateErrorModel()
-#em.SetAttribute("ErrorUnit", ns.core.StringValue("ERROR_UNIT_PACKET"))
-#em.SetAttribute("ErrorRate", ns.core.DoubleValue(0.02))
-#d4d5.Get(1).SetReceiveErrorModel(em)
+em = ns.network.RateErrorModel()
+em.SetAttribute("ErrorUnit", ns.core.StringValue("ERROR_UNIT_PACKET"))
+em.SetAttribute("ErrorRate", ns.core.DoubleValue(0.02))
+d4d5.Get(1).SetReceiveErrorModel(em)
 
 
 #######################################################################################
@@ -189,10 +189,12 @@ stack.Install(nodes)
 # sending node. Note that this must called after stack.Install().
 #
 # The code below would tell node 0 to use TCP Tahoe and node 1 to use TCP Westwood.
-#ns.core.Config.Set("/NodeList/0/$ns3::TcpL4Protocol/SocketType",
-#                   ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpTahoe")))
-#ns.core.Config.Set("/NodeList/1/$ns3::TcpL4Protocol/SocketType",
-#                   ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpWestwood")))
+ns.core.Config.Set("/NodeList/0/$ns3::TcpL4Protocol/SocketType",
+                   ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpTahoe")))
+ns.core.Config.Set("/NodeList/1/$ns3::TcpL4Protocol/SocketType",
+                   ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpWestwood")))
+ns.core.Config.Set("/NodeList/6/$ns3::TcpL4Protocol/SocketType",
+                   ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpNewReno")))
 
 
 # Assign IP addresses for net devices
@@ -293,6 +295,7 @@ SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Sec
 
 pointToPoint.EnablePcap("sim-tcp", d0d4.Get(0), True)
 pointToPoint.EnablePcap("sim-tcp", d1d4.Get(0), True)
+pointToPoint.EnablePcap("sim-tcp", d6d4.Get(0), True)
 
 
 #######################################################################################
