@@ -29,7 +29,7 @@ import ns.flow_monitor
 #
 # Enable this line to have random number being generated between runs.
 
-ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
+#ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
 
 
 #######################################################################################
@@ -278,7 +278,7 @@ def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
 ###
 
 SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupTCPConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
+SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #SetupUDPSink(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(20.0), ns.core.Seconds(40.0))
 
