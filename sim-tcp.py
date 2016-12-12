@@ -23,13 +23,14 @@ import ns.internet
 import ns.network
 import ns.point_to_point
 import ns.flow_monitor
+import time
 
 #######################################################################################
 # SEEDING THE RNG
 #
 # Enable this line to have random number being generated between runs.
 
-#ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
+ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
 
 
 #######################################################################################
