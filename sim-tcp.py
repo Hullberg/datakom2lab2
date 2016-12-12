@@ -70,8 +70,8 @@ cmd = ns.core.CommandLine()
 
 # Default values
 cmd.latency = 1
-cmd.rate = 500000
-cmd.on_off_rate = 600000
+cmd.rate = 1000000
+cmd.on_off_rate = 300000
 cmd.AddValue ("rate", "P2P data rate in bps")
 cmd.AddValue ("latency", "P2P link Latency in miliseconds")
 cmd.AddValue ("on_off_rate", "OnOffApplication data sending rate")
