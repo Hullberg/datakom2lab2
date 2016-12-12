@@ -71,7 +71,7 @@ cmd = ns.core.CommandLine()
 # Default values
 cmd.latency = 1
 cmd.rate = 500000
-cmd.on_off_rate = 300000
+cmd.on_off_rate = 600000
 cmd.AddValue ("rate", "P2P data rate in bps")
 cmd.AddValue ("latency", "P2P link Latency in miliseconds")
 cmd.AddValue ("on_off_rate", "OnOffApplication data sending rate")
@@ -93,7 +93,7 @@ nodes.Create(8)
 # NetDevices (of type PointToPointNetDevice), etc.
 
 # Set the default queue length to 5 packets (used by NetDevices)
-ns.core.Config.SetDefault("ns3::DropTailQueue::MaxPackets", ns.core.UintegerValue(10))
+ns.core.Config.SetDefault("ns3::DropTailQueue::MaxPackets", ns.core.UintegerValue(5))
 
 
 # To connect the point-to-point channels, we need to define NodeContainers for all the
