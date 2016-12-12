@@ -144,10 +144,10 @@ d7d5 = pointToPoint.Install(n7n5)
 d4d5 = pointToPoint.Install(n4n5)
 
 # Here we can introduce an error model on the bottle-neck link (from node 4 to 5)
-em = ns.network.RateErrorModel()
-em.SetAttribute("ErrorUnit", ns.core.StringValue("ERROR_UNIT_PACKET"))
-em.SetAttribute("ErrorRate", ns.core.DoubleValue(0.02))
-d4d5.Get(1).SetReceiveErrorModel(em)
+#em = ns.network.RateErrorModel()
+#em.SetAttribute("ErrorUnit", ns.core.StringValue("ERROR_UNIT_PACKET"))
+#em.SetAttribute("ErrorRate", ns.core.DoubleValue(0.05))
+#d4d5.Get(1).SetReceiveErrorModel(em)
 
 
 #######################################################################################
@@ -238,8 +238,8 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
                           ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 
                                                        8080))
   sink_apps = packet_sink_helper.Install(dstNode)
-  sink_apps.Start(ns.core.Seconds(2.0))
-  sink_apps.Stop(ns.core.Seconds(50.0)) 
+  sink_apps.Start(ns.core.Seconds(1.0))
+  sink_apps.Stop(ns.core.Seconds(40.0)) 
 
   # Create TCP connection from srcNode to dstNode 
   on_off_tcp_helper = ns.applications.OnOffHelper("ns3::TcpSocketFactory", 
@@ -248,9 +248,9 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
                       ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
   on_off_tcp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500)) 
   on_off_tcp_helper.SetAttribute("OnTime",
-                      ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
+                      ns.core.StringValue("ns3::ConstantRandomVariable[Constant=3]"))
   on_off_tcp_helper.SetAttribute("OffTime",
-                        ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
+                        ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
   #                      ns.core.StringValue("ns3::UniformRandomVariable[Min=1,Max=2]"))
   #                      ns.core.StringValue("ns3::ExponentialRandomVariable[Mean=2]"))
 
@@ -259,21 +259,21 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
   client_apps.Start(startTime)
   client_apps.Stop(stopTime) 
 
-def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
-  packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
-  sink_apps = packet_sink_helper.Install(dstNode)
-  sink_apps.Start(ns.core.Seconds(2.0))
-  sink_apps.Stop(ns.core.Seconds(50.0))
+#def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
+#  packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
+#  sink_apps = packet_sink_helper.Install(dstNode)
+#  sink_apps.Start(ns.core.Seconds(2.0))
+#  sink_apps.Stop(ns.core.Seconds(50.0))
 
-  on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
-  on_off_udp_helper.SetAttribute("DataRate", ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
-  on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
-  on_off_udp_helper.SetAttribute("OnTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
-  on_off_udp_helper.SetAttribute("OffTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
+#  on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
+#  on_off_udp_helper.SetAttribute("DataRate", ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
+#  on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
+#  on_off_udp_helper.SetAttribute("OnTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
+#  on_off_udp_helper.SetAttribute("OffTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
 
-  client_apps = on_off_udp_helper.Install(srcNode)
-  client_apps.Start(startTime)
-  client_apps.Stop(stopTime)
+#  client_apps = on_off_udp_helper.Install(srcNode)
+#  client_apps.Start(startTime)
+#  client_apps.Stop(stopTime)
 
 ###
 
@@ -315,7 +315,7 @@ monitor = flowmon_helper.InstallAll()
 #
 # We have to set stop time, otherwise the flowmonitor causes simulation to run forever
 
-ns.core.Simulator.Stop(ns.core.Seconds(50.0))
+ns.core.Simulator.Stop(ns.core.Seconds(100.0))
 ns.core.Simulator.Run()
 
 
