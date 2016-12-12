@@ -47,9 +47,9 @@ import ns.flow_monitor
 #ns.core.LogComponentEnable("PointToPointNetDevice", ns.core.LOG_LEVEL_ALL)
 #ns.core.LogComponentEnable("DropTailQueue", ns.core.LOG_LEVEL_LOGIC)
 #ns.core.LogComponentEnable("OnOffApplication", ns.core.LOG_LEVEL_INFO)
-ns.core.LogComponentEnable("TcpWestwood", ns.core.LOG_LEVEL_LOGIC)
-ns.core.LogComponentEnable("TcpTahoe", ns.core.LOG_LEVEL_LOGIC)
-ns.core.LogComponentEnable("TcpNewReno", ns.core.LOG_LEVEL_LOGIC)
+#ns.core.LogComponentEnable("TcpWestwood", ns.core.LOG_LEVEL_LOGIC)
+#ns.core.LogComponentEnable("TcpTahoe", ns.core.LOG_LEVEL_LOGIC)
+#ns.core.LogComponentEnable("TcpNewReno", ns.core.LOG_LEVEL_LOGIC)
 
 
 
