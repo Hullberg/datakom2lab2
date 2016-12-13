@@ -268,7 +268,7 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
   client_apps.Start(startTime)
   client_apps.Stop(stopTime) 
 
-#def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
+def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
   packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
   sink_apps = packet_sink_helper.Install(dstNode)
   sink_apps.Start(ns.core.Seconds(1.0))
