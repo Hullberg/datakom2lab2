@@ -83,7 +83,7 @@ cmd.Parse(sys.argv)
 # CREATE NODES
 
 nodes = ns.network.NodeContainer()
-nodes.Create(8)
+nodes.Create(9)
 
 
 #######################################################################################
@@ -110,6 +110,10 @@ n1n4.Add(nodes.Get(4))
 n6n4 = ns.network.NodeContainer()
 n6n4.Add(nodes.Get(6))
 n6n4.Add(nodes.Get(4))
+
+n8n4 = ns.network.NodeContainer()
+n8n4.Add(nodes.Get(8))
+n8n4.Add(nodes.Get(4))
 
 n2n5 = ns.network.NodeContainer()
 n2n5.Add(nodes.Get(2))
@@ -139,6 +143,7 @@ pointToPoint.SetChannelAttribute("Delay",
 d0d4 = pointToPoint.Install(n0n4)
 d1d4 = pointToPoint.Install(n1n4)
 d6d4 = pointToPoint.Install(n6n4)
+d8d4 = pointToPoint.Install(n8n4)
 d2d5 = pointToPoint.Install(n2n5)
 d3d5 = pointToPoint.Install(n3n5)
 d7d5 = pointToPoint.Install(n7n5)
@@ -210,6 +215,9 @@ if1if4 = address.Assign(d1d4)
 address.SetBase(ns.network.Ipv4Address("10.1.6.0"), ns.network.Ipv4Mask("255.255.255.0"))
 if6if4 = address.Assign(d6d4)
 
+address.SetBase(ns.network.Ipv4Address("10.1.8.0"), ns.network.Ipv4Mask("255.255.255.0"))
+if8if4 = address.Assign(d8d4)
+
 address.SetBase(ns.network.Ipv4Address("10.1.3.0"), ns.network.Ipv4Mask("255.255.255.0"))
 if2if5 = address.Assign(d2d5)
 
@@ -261,27 +269,27 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
   client_apps.Stop(stopTime) 
 
 #def SetupUDPSink(srcNode, dstNode, dstAddr, startTime, stopTime):
-#  packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
-#  sink_apps = packet_sink_helper.Install(dstNode)
-#  sink_apps.Start(ns.core.Seconds(2.0))
-#  sink_apps.Stop(ns.core.Seconds(50.0))
+  packet_sink_helper = ns.applications.PacketSinkHelper("ns3::UdpSocketFactory", ns.network.InetSocketAddress(ns.network.Ipv4Address.GetAny(), 8080))
+  sink_apps = packet_sink_helper.Install(dstNode)
+  sink_apps.Start(ns.core.Seconds(1.0))
+  sink_apps.Stop(ns.core.Seconds(40.0))
 
-#  on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
-#  on_off_udp_helper.SetAttribute("DataRate", ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
-#  on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
-#  on_off_udp_helper.SetAttribute("OnTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
-#  on_off_udp_helper.SetAttribute("OffTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
+  on_off_udp_helper = ns.applications.OnOffHelper("ns3::UdpSocketFactory", ns.network.Address(ns.network.InetSocketAddress(dstAddr, 8080)))
+  on_off_udp_helper.SetAttribute("DataRate", ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate*2))))
+  on_off_udp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
+  on_off_udp_helper.SetAttribute("OnTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
+  on_off_udp_helper.SetAttribute("OffTime", ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
 
-#  client_apps = on_off_udp_helper.Install(srcNode)
-#  client_apps.Start(startTime)
-#  client_apps.Stop(stopTime)
+  client_apps = on_off_udp_helper.Install(srcNode)
+  client_apps.Start(startTime)
+  client_apps.Stop(stopTime)
 
 ###
 
 SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-#SetupUDPSink(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(20.0), ns.core.Seconds(40.0))
+SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 
 
 #######################################################################################
@@ -297,6 +305,7 @@ SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Sec
 pointToPoint.EnablePcap("sim-tcp", d0d4.Get(0), True)
 pointToPoint.EnablePcap("sim-tcp", d1d4.Get(0), True)
 pointToPoint.EnablePcap("sim-tcp", d6d4.Get(0), True)
+pointToPoint.EnablePcap("sim-tcp", d8d4.Get(0), True)
 
 
 #######################################################################################
