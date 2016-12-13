@@ -71,7 +71,7 @@ cmd = ns.core.CommandLine()
 
 # Default values
 cmd.latency = 1
-cmd.rate = 500000
+cmd.rate = 150000
 cmd.on_off_rate = 300000
 cmd.AddValue ("rate", "P2P data rate in bps")
 cmd.AddValue ("latency", "P2P link Latency in miliseconds")
@@ -249,9 +249,9 @@ def SetupTcpConnection(srcNode, dstNode, dstAddr, startTime, stopTime):
                       ns.network.DataRateValue(ns.network.DataRate(int(cmd.on_off_rate))))
   on_off_tcp_helper.SetAttribute("PacketSize", ns.core.UintegerValue(1500)) 
   on_off_tcp_helper.SetAttribute("OnTime",
-                      ns.core.StringValue("ns3::ConstantRandomVariable[Constant=3]"))
+                      ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
   on_off_tcp_helper.SetAttribute("OffTime",
-                        ns.core.StringValue("ns3::ConstantRandomVariable[Constant=2]"))
+                        ns.core.StringValue("ns3::ConstantRandomVariable[Constant=1]"))
   #                      ns.core.StringValue("ns3::UniformRandomVariable[Min=1,Max=2]"))
   #                      ns.core.StringValue("ns3::ExponentialRandomVariable[Mean=2]"))
 
