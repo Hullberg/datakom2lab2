@@ -129,10 +129,6 @@ n7n5 = ns.network.NodeContainer()
 n7n5.Add(nodes.Get(7))
 n7n5.Add(nodes.Get(5))
 
-n9n5 = ns.network.NodeContainer()
-n9n5.Add(nodes.Get(9))
-n9n5.Add(nodes.Get(5))
-
 n4n5 = ns.network.NodeContainer()
 n4n5.Add(nodes.Get(4))
 n4n5.Add(nodes.Get(5))
@@ -153,7 +149,6 @@ d8d4 = pointToPoint.Install(n8n4)
 d2d5 = pointToPoint.Install(n2n5)
 d3d5 = pointToPoint.Install(n3n5)
 d7d5 = pointToPoint.Install(n7n5)
-d9d5 = pointToPoint.Install(n9n5)
 d4d5 = pointToPoint.Install(n4n5)
 
 # Here we can introduce an error model on the bottle-neck link (from node 4 to 5)
@@ -234,9 +229,6 @@ if3if5 = address.Assign(d3d5)
 address.SetBase(ns.network.Ipv4Address("10.1.7.0"), ns.network.Ipv4Mask("255.255.255.0"))
 if7if5 = address.Assign(d7d5)
 
-address.SetBase(ns.network.Ipv4Address("10.1.9.0"), ns.network.Ipv4Mask("255.255.255.0"))
-if9if5 = address.Assign(d9d5)
-
 address.SetBase(ns.network.Ipv4Address("10.1.5.0"), ns.network.Ipv4Mask("255.255.255.0"))
 if4if5 = address.Assign(d4d5)
 
@@ -303,10 +295,10 @@ def SetupUDPecho(srcNode, dstNode, dstAddr, startTime, stopTime):
   serverApps.Stop(stopTime)
 
   echoClient = ns.applications.UdpEchoClientHelper(dstAddr, 9)
-  echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(1000000000))
+  echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(150000))
   echoClient.SetAttribute("Interval",
                           ns.core.TimeValue(ns.core.Seconds (float(cmd.interval))))
-  echoClient.SetAttribute("PacketSize", ns.core.UintegerValue(1024*20))
+  echoClient.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
 
   # Put the client on node 0 and start sending at time 1.0s.
   clientApps = echoClient.Install(srcNode)
@@ -319,7 +311,7 @@ SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Sec
 SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupUDPecho(nodes.Get(8), nodes.Get(9), if9if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
+SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #######################################################################################
 # CREATE A PCAP PACKET TRACE FILE
 #
