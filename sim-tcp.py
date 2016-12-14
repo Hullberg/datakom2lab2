@@ -9,12 +9,16 @@
 #       n6 -- n4 -- n5 -- n7
 #             |      |
 #       n1 ---+      +--- n3
+#             |
+#             n8
 #
 # - All links are point-to-point with data rate 500kb/s and propagation delay 2ms
 #
-# Two data flows (and their applications are created):
+# data flows (and their applications are created):
 # - A TCP flow form n0 to n2
 # - A TCP flow from n1 to n3
+# - A TCP flow from n6 to n7
+# - A UDP flow from n8 to n5
 
 import sys
 import ns.applications
@@ -24,6 +28,7 @@ import ns.network
 import ns.point_to_point
 import ns.flow_monitor
 import time
+import random
 
 #######################################################################################
 # SEEDING THE RNG
@@ -307,9 +312,18 @@ def SetupUDPecho(srcNode, dstNode, dstAddr, startTime, stopTime):
 
 ###
 
-SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
+r1s = random.randint(0, 40)
+r1e = random.randint(r1s, 40)
+
+r2s = random.randint(0, 40)
+r2e = random.randint(r2s, 40)
+
+r3s = random.randint(0, 40)
+r3e = random.randint(r3s, 40)
+
+SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), r1s, r1e)
+SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), r2s, r2e)
+SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), r3s, r3e)
 #SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(1), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #######################################################################################
