@@ -311,7 +311,7 @@ SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Sec
 SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
+SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(1), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #######################################################################################
 # CREATE A PCAP PACKET TRACE FILE
 #
