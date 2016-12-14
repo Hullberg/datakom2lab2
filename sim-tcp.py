@@ -58,8 +58,6 @@ ns.core.RngSeedManager.SetSeed(int(time.time() * 1000 % (2**31-1)))
 #ns.core.LogComponentEnable("TcpNewReno", ns.core.LOG_LEVEL_LOGIC)
 
 
-
-
 #######################################################################################
 # COMMAND LINE PARSING
 #
@@ -175,7 +173,7 @@ ns.core.Config.SetDefault("ns3::TcpSocket::SegmentSize", ns.core.UintegerValue(1
 # connections created in the simulator. If you want to simulate different TCP versions
 # at the same time, see below for how to do that.
 #ns.core.Config.SetDefault("ns3::TcpL4Protocol::SocketType",
-#                          ns.core.StringValue("ns3::TcpTahoe"))
+#                          ns.core.StringValue("ns3::TcpVegas"))
 #                          ns.core.StringValue("ns3::TcpReno"))
 #                          ns.core.StringValue("ns3::TcpNewReno"))
 #                          ns.core.StringValue("ns3::TcpWestwood"))
@@ -183,7 +181,6 @@ ns.core.Config.SetDefault("ns3::TcpSocket::SegmentSize", ns.core.UintegerValue(1
 # Some examples of attributes for some of the TCP versions.
 ns.core.Config.SetDefault("ns3::TcpNewReno::ReTxThreshold", ns.core.UintegerValue(4))
 ns.core.Config.SetDefault("ns3::TcpWestwood::ProtocolType", ns.core.StringValue("WestwoodPlus"))
-
 
 #######################################################################################
 # CREATE A PROTOCOL STACK
@@ -204,6 +201,9 @@ stack.Install(nodes)
 # The code below would tell node 0 to use TCP Tahoe and node 1 to use TCP Westwood.
 ns.core.Config.Set("/NodeList/0/$ns3::TcpL4Protocol/SocketType",
                    ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpTahoe")))
+#ns.core.Config.Set("/NodeList/0/$ns3::TcpL4Protocol/SocketType", ns.core.StringValue("ns3::TcpVegas"))
+#ns.core.Config.Set("/NodeList/0/$ns3::TcpL4Protocol/SocketType", ns.core.TypeID.LookupByName("ns3::TcpVegas::GetTypeId()")
+
 ns.core.Config.Set("/NodeList/1/$ns3::TcpL4Protocol/SocketType",
                    ns.core.TypeIdValue(ns.core.TypeId.LookupByName ("ns3::TcpWestwood")))
 ns.core.Config.Set("/NodeList/6/$ns3::TcpL4Protocol/SocketType",
@@ -300,7 +300,7 @@ def SetupUDPecho(srcNode, dstNode, dstAddr, startTime, stopTime):
   serverApps.Stop(stopTime)
 
   echoClient = ns.applications.UdpEchoClientHelper(dstAddr, 9)
-  echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(150000))
+  echoClient.SetAttribute("MaxPackets", ns.core.UintegerValue(15000000))
   echoClient.SetAttribute("Interval",
                           ns.core.TimeValue(ns.core.Seconds (float(cmd.interval))))
   echoClient.SetAttribute("PacketSize", ns.core.UintegerValue(1500))
@@ -321,9 +321,9 @@ r2e = random.randint(r2s, 40)
 r3s = random.randint(0, 40)
 r3e = random.randint(r3s, 40)
 
-SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), r1s, r1e)
-SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), r2s, r2e)
-SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), r3s, r3e)
+SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Seconds(r1s), ns.core.Seconds(r1e))
+SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(r2s), ns.core.Seconds(r2e))
+SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(r3s), ns.core.Seconds(r3e))
 #SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(1), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
 #######################################################################################
