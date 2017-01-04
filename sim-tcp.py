@@ -76,7 +76,7 @@ cmd = ns.core.CommandLine()
 cmd.latency = 1
 cmd.rate = 500000
 cmd.on_off_rate = 300000
-cmd.interval = 0.01
+cmd.interval = 0.03
 cmd.AddValue ("rate", "P2P data rate in bps")
 cmd.AddValue ("latency", "P2P link Latency in miliseconds")
 cmd.AddValue ("on_off_rate", "OnOffApplication data sending rate")
@@ -325,7 +325,7 @@ SetupTcpConnection(nodes.Get(0), nodes.Get(2), if2if5.GetAddress(0), ns.core.Sec
 SetupTcpConnection(nodes.Get(1), nodes.Get(3), if3if5.GetAddress(0), ns.core.Seconds(r2s), ns.core.Seconds(r2e))
 SetupTcpConnection(nodes.Get(6), nodes.Get(7), if7if5.GetAddress(0), ns.core.Seconds(r3s), ns.core.Seconds(r3e))
 #SetupUDPSink(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(0), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
-SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(1), ns.core.Seconds(1.0), ns.core.Seconds(40.0))
+SetupUDPecho(nodes.Get(8), nodes.Get(5), if4if5.GetAddress(1), ns.core.Seconds(0), ns.core.Seconds(40.0))
 #######################################################################################
 # CREATE A PCAP PACKET TRACE FILE
 #
